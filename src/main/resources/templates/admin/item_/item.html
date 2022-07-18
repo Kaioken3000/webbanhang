@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>Karl - Admin</title>
 
     <!-- Custom fonts for this template-->
     <link href="/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -60,20 +60,27 @@
             <!-- Nav Item - Category -->
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/admin/category}">
-                    <i class="fas fa-fw fa-table"></i>
+                    <i class="fa fa-solid fa-user"></i>
                     <span>Category</span></a>
+            </li>
+
+            <!-- Nav Cart - Account -->
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/cart}">
+                    <i class="fa fa-solid fa-user"></i>
+                    <span>Cart</span></a>
             </li>
 
             <!-- Nav Item - Account -->
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/admin/account}">
-                    <i class="fas fa-fw fa-table"></i>
+                    <i class="fa fa-solid fa-user"></i>
                     <span>Account</span></a>
             </li>
 
             <!-- Nav Item - Logout -->
             <li class="nav-item">
-                <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>
                     <span>Logout</span></a>
             </li>
@@ -281,7 +288,7 @@
                             <h6 class="m-0 font-weight-bold text-primary">Item</h6>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
+                            <div class="table table-responsive table-hover">
                                 <table class="table " id="dataTable" width="100%" cellspacing="0">
                                     <button type="button" class="btn btn-primary mb-2" data-toggle="modal"
                                         data-target="#addItemModel">
@@ -335,11 +342,11 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div class="col-sm-2">
+                                Total Rows: [[${totalItems}]]
+                            </div>
                             <div th:if="${totalPages > 1}">
                                 <div class="row col-sm-10">
-                                    <div class="col-sm-2">
-                                        Total Rows: [[${totalItems}]]
-                                    </div>
                                     <div class="col-sm-2">
                                         <span th:each="i: ${#numbers.sequence(1, totalPages)}">
                                             <a th:if="${currentPage != i}"
@@ -416,7 +423,12 @@
     <script src="/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="/admin/js/sb-admin-2.min.js"></script>
+    <!-- Page level plugins -->
+    <script src="/admin/vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="/admin/js/demo/chart-area-demo.js"></script>
+    <script src="/admin/js/demo/chart-pie-demo.js"></script>
 
 </body>
 

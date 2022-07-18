@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>Karl - Admin</title>
 
     <!-- Custom fonts for this template-->
     <link href="/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -60,20 +60,27 @@
             <!-- Nav Item - Category -->
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/admin/category}">
-                    <i class="fas fa-fw fa-table"></i>
+                    <i class="fa fa-solid fa-user"></i>
                     <span>Category</span></a>
+            </li>
+
+            <!-- Nav Cart - Account -->
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/cart}">
+                    <i class="fa fa-solid fa-user"></i>
+                    <span>Cart</span></a>
             </li>
 
             <!-- Nav Item - Account -->
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/admin/account}">
-                    <i class="fas fa-fw fa-table"></i>
+                    <i class="fa fa-solid fa-user"></i>
                     <span>Account</span></a>
             </li>
 
             <!-- Nav Item - Logout -->
             <li class="nav-item">
-                <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>
                     <span>Logout</span></a>
             </li>
@@ -190,55 +197,20 @@
                     <h1 class="h3 mb-2 text-gray-800">Account management</h1>
 
                     <div class="card shadow mb-4">
-                        <!-- Add category Modal  -->
-                        <div class="modal fade" id="addCategoryModel" tabindex="-1" role="dialog"
-                            aria-labelledby="addCategoryModelLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <!-- <h5 class="modal-title" id="addCategoryModelLabel">Add Account</h5> -->
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <!-- Form begin -->
-                                    <!-- <form th:action="@{/admin/addCategory}" th:object="${category}" method="POST">
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <label for="code" class="col-form-label">Code</label>
-                                                <input type="text" class="form-control" id="code" th:field="*{code}">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="name" class="col-form-label">Name</label>
-                                                <input type="text" class="form-control" id="name" th:field="*{name}">
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Add</button>
-                                        </div>
-                                    </form> -->
-                                    <!-- End begin -->
-                                </div>
-                            </div>
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Account</h6>
                         </div>
                         <!-- Table -->
                         <div class="card-body">
-                            <div class="table-responsive">
+                            <div class="table table-responsive table-hover">
                                 <table class="table" id="dataTable" width="100%" cellspacing="0">
-                                    <!-- Button trigger modal -->
-                                    <!-- <button type="button" class="btn btn-primary mb-2" data-toggle="modal"
-                                        data-target="#addCategoryModel">
-                                        Add category
-                                    </button> -->
                                     <thead>
                                         <tr>
                                             <th>ID</th>
                                             <th>First name</th>
                                             <th>Last name</th>
                                             <th>Email</th>
-                                            <th>Password</th>
+                                            <th class="col-4">Password</th>
                                             <th>Role</th>
                                             <th>Action</th>
                                         </tr>
@@ -249,7 +221,7 @@
                                             <td th:text="${user.firstname}"></td>
                                             <td th:text="${user.lastname}"></td>
                                             <td th:text="${user.email}"></td>
-                                            <td th:text="${user.password}"></td>
+                                            <td class="col-4" th:text="${user.password}"></td>
                                             <td>
                                                 <th:block th:each="roles : ${user.getRoles()}">
                                                     <div th:text="${roles.getName()}"></div>
@@ -260,39 +232,41 @@
                                                     <i class="fa fa-pencil-square-o"></i></a>
                                                 <a th:href="@{/admin/deleteAccount/{id}(id=${user.id})}"><i
                                                         class="fa fa-trash"></i></a>
+                                                <a th:href="@{/admin/showCartDetail/{id}(id=${user.id})}">
+                                                    <i class="fa fa-solid fa-info-circle"></i></a>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
+                                <!-- /.container-fluid -->
+                                <div class="col-sm-2">
+                                    Total Rows: [[${totalItems}]]
+                                </div>
+                                <div th:if="${totalPages > 1}">
+                                    <div class="row col-sm-10">
+                                        <div class="col-sm-2">
+                                            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                                                <a th:if="${currentPage != i}"
+                                                    th:href="@{'/admin/account/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+                                                <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
+                                            </span>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <a th:if="${currentPage < totalPages}"
+                                                th:href="@{'/admin/account/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+                                            <span th:unless="${currentPage < totalPages}">Next</span>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <a th:if="${currentPage < totalPages}"
+                                                th:href="@{'/admin/account/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+                                            <span th:unless="${currentPage < totalPages}">Last</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                </div>
-                <!-- /.container-fluid -->
-                <div th:if="${totalPages > 1}">
-                    <div class="row col-sm-10">
-                        <div class="col-sm-2">
-                            Total Rows: [[${totalItems}]]
-                        </div>
-                        <div class="col-sm-2">
-                            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-                                <a th:if="${currentPage != i}"
-                                    th:href="@{'/admin/account/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
-                                <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
-                            </span>
-                        </div>
-                        <div class="col-sm-1">
-                            <a th:if="${currentPage < totalPages}"
-                                th:href="@{'/admin/account/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
-                            <span th:unless="${currentPage < totalPages}">Next</span>
-                        </div>
-                        <div class="col-sm-1">
-                            <a th:if="${currentPage < totalPages}"
-                                th:href="@{'/admin/account/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
-                            <span th:unless="${currentPage < totalPages}">Last</span>
-                        </div>
-                    </div>
                 </div>
             </div>
             <!-- End of Main Content -->
@@ -346,7 +320,12 @@
     <script src="/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="/admin/js/sb-admin-2.min.js"></script>
+    <!-- Page level plugins -->
+    <script src="/admin/vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="/admin/js/demo/chart-area-demo.js"></script>
+    <script src="/admin/js/demo/chart-pie-demo.js"></script>
 
 </body>
 

@@ -111,13 +111,14 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    <form
+                    <form th:action="@{/admin/category/showSearch}"
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
+                                aria-label="Search" aria-describedby="basic-addon2" name="keyword"
+                                th:value="${keyword}">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
+                                <button class="btn btn-primary" type="submit" value="Search">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
                             </div>
@@ -194,40 +195,64 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Account management</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Cart management</h1>
 
                     <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Cart</h6>
+                        </div>
                         <!-- Table -->
                         <div class="card-body">
-                            <h5 class="modal-title" id="updateCategoryModelLabel">Update Account</h5>
-                            <form th:action="@{/admin/updateAccount/{id}(id=${user.id})}" th:object="${user}"
-                                method="POST">
-                                <div class="form-group">
-                                    <label for="firstname" class="col-form-label">First Name</label>
-                                    <input type="text" class="form-control" id="firstname" th:field="*{firstname}">
+                            <div class="table table-responsive table-hover">
+                                <table class="table" id="dataTable" width="100%" cellspacing="0">
+                                    <!-- Button trigger modal -->
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>User Email and ID</th>
+                                            <th>Number</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="cart: ${listCarts}" th:id="${cart.id}">
+                                            <td th:text="${cart.id}"></td>
+                                            <td><span th:text="${cart.getUser().email}"></span>
+                                                (<span th:text="${cart.getUser().id}"></span>)
+                                                </td>
+                                            <td th:text="${cart.number}"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-sm-2">
+                                Total Rows: [[${totalItems}]]
+                            </div>
+                            <div th:if="${totalPages > 1}">
+                                <div class="row col-sm-10">
+                                    <div class="col-sm-2">
+                                        <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                                            <a th:if="${currentPage != i}"
+                                                th:href="@{'/admin/category/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+                                            <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
+                                        </span>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <a th:if="${currentPage < totalPages}"
+                                            th:href="@{'/admin/category/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+                                        <span th:unless="${currentPage < totalPages}">Next</span>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <a th:if="${currentPage < totalPages}"
+                                            th:href="@{'/admin/category/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+                                        <span th:unless="${currentPage < totalPages}">Last</span>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="lastname" class="col-form-label">Last Name</label>
-                                    <input type="text" class="form-control" id="lastname" th:field="*{lastname}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email" class="col-form-label">Email</label>
-                                    <input type="text" class="form-control" id="email" th:field="*{email}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="roless" class="col-form-label">Role</label>
-                                    <select th:field="*{roles}">
-                                        <option th:each="roles : ${listRoles}" th:value="${roles.id}"
-                                            th:text="${roles.name}">
-                                        </option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Update</button>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
+
             </div>
             <!-- End of Main Content -->
 
