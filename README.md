@@ -6,3 +6,4 @@ Website quản lý bán quần áo, phụ kiện,... bao gồn các chức năng
   + Quản lý giỏ hàng theo user
   + Người dùng có thể truy cập trang web không cần đăng nhập nhưng chỉ có thể xem hàng hoá
   + Người dùng tạo tài khoản thì có thể thực hiện mua hàng 
+  + :)
