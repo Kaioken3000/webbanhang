@@ -35,7 +35,7 @@ public class AccountController {
             @RequestParam("sortField") String sortField,
             @RequestParam("sortDir") String sortDir,
             Model model) {
-        int pageSize = 6;
+        int pageSize = 7;
 
         Page<User> page = userService.findPaginated(pageNo, pageSize, sortField, sortDir);
         List<User> listUsers = page.getContent();
