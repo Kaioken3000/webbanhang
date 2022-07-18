@@ -21,6 +21,8 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+
+    //show page
     @GetMapping("/admin/category")
     public String viewCategoryPage(Model model) {
         return findPaginated(1, "id", "asc", model);
@@ -51,7 +53,7 @@ public class CategoryController {
         return "/admin/category_/category";
     }
 
-
+    //show search page
     @RequestMapping("/admin/category/showSearch")
     public String findPaginatedSearch( Model model, String keyword) {
         if (keyword != null) {
@@ -66,26 +68,52 @@ public class CategoryController {
         return "/admin/category_/categorySearch";
     }
 
+    // add 
     @PostMapping("/admin/addCategory")
     public String addCategory(@ModelAttribute("Category") Category category) {
         categoryService.addCategory(category);
         return "redirect:/admin/category";
     }
 
+    // delete
     @GetMapping("/admin/deleteCategory/{id}")
     public String deleteCourse(@PathVariable long id) {
         categoryService.deleteCategory(id);
         return "redirect:/admin/category";
     }
 
+    // update
     @GetMapping("/admin/showUpdateCategory/{id}")
-    public String showUpdateCategory(@PathVariable long id, Model model) {
-        model.addAttribute("category", categoryService.getCategoryById(id));
+    public String viewCategoryUpdatePage(@PathVariable long id, Model model) {
+        return showUpdateCategory(id, 1, "id", "asc", model);
+    }
+
+    @GetMapping("/admin/showUpdateCategory/page/{pageNo}/id/{id}")
+    public String showUpdateCategory(@PathVariable long id
+                ,@PathVariable(value = "pageNo") int pageNo,
+                @RequestParam("sortField") String sortField,
+                @RequestParam("sortDir") String sortDir,
+            Model model) {
+        int pageSize = 6;
+
+        Page<Category> page = categoryService.findPaginated(pageNo, pageSize, sortField, sortDir);
+        List<Category> listCategories = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
+        model.addAttribute("listCategories", listCategories);
+        model.addAttribute("category_update", categoryService.getCategoryById(id));
         return "/admin/category_/categoryUpdate";
     }
 
     @PostMapping("/admin/updateCategory/{id}")
-    public String updateCategory(@PathVariable long id, @ModelAttribute("category") Category category) {
+    public String updateCategory(@PathVariable long id, @ModelAttribute("category_oj") Category category) {
         Category extingCategory = categoryService.getCategoryById(id);
         extingCategory.setId(category.getId());
         extingCategory.setCode(category.getCode());
