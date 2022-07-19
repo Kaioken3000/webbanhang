@@ -1,14 +1,17 @@
 package com.mywebsite.webbanhang.client.index;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.mywebsite.webbanhang.admin.category.CategoryService;
+import com.mywebsite.webbanhang.admin.item.Item;
 import com.mywebsite.webbanhang.admin.item.ItemService;
 import com.mywebsite.webbanhang.client.cart.Cart;
 import com.mywebsite.webbanhang.client.cart.CartService;
@@ -35,16 +38,16 @@ public class IndexController {
 
     @GetMapping("/client/index")
     public String showIndexPage(Model model) {
-        model.addAttribute("itemLists", itemService.listAllItem());
+        int pageSize = 6;
+        Page<Item> page = itemService.findPaginated(1, pageSize, "id", "asc");
+        List<Item> listItems = page.getContent();
+        // model.addAttribute("itemLists", itemService.listAllItem());
+        model.addAttribute("itemLists", listItems);
         model.addAttribute("category_list", categoryService.listAllCategory());
 
-        try {
-            Principal principal = request.getUserPrincipal();
-            User user = userService.getUserByEmail(principal.getName());
-            model.addAttribute("listCarts", cartService.listCartByUserLoginId(user.getId()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Principal principal = request.getUserPrincipal();
+        User user = userService.getUserByEmail(principal.getName());
+        model.addAttribute("listCarts", cartService.listCartByUserLoginId(user.getId()));
 
         Cart cart = new Cart();
         model.addAttribute("cart", cart);
@@ -53,7 +56,11 @@ public class IndexController {
 
     @GetMapping("/")
     public String showIndexPage_(Model model) {
-        model.addAttribute("itemLists", itemService.listAllItem());
+        int pageSize = 6;
+        Page<Item> page = itemService.findPaginated(1, pageSize, "id", "asc");
+        List<Item> listItems = page.getContent();
+        // model.addAttribute("itemLists", itemService.listAllItem());
+        model.addAttribute("itemLists", listItems);
         model.addAttribute("category_list", categoryService.listAllCategory());
 
         try {

@@ -37,17 +37,16 @@ public class CartController {
     }
 
     @PostMapping("/client/cart/addCart/{itemCart}")
-    public RedirectView addCart(@PathVariable long itemCart, @ModelAttribute("cart") Cart cart){
+    public RedirectView addCart(@PathVariable long itemCart){
         Principal principal = request.getUserPrincipal();
         User user = userService.getUserByEmail(principal.getName());
+        
+        Cart cart = new Cart();
         cart.setUser(user);
-
+        cart.setHasAddCart(true);
+        cart.setHasBuy(false);
         cartService.addCart(cart);
-            
         String referer = request.getHeader("Referer");
-        System.out.println("=================================================");
-        System.out.println(referer);
-        System.out.println("=================================================");
         return new RedirectView(referer);
     }
 

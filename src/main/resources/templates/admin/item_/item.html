@@ -230,36 +230,21 @@
                                             <input type="datetime-local" class="form-control" id="day_publish"
                                                 th:field="*{dayPublish}">
                                         </div>
-                                        <!-- ////////////////////////////////////////// -->
                                         <div class="form-group">
                                             <label for="category" class="col-form-label">Category</label>
                                             <input type="checkbox" name="category"
                                                 th:each="category : ${listCategories}" th:text="${category.name}"
                                                 th:value="${category.id}" th:field="*{category}">
                                         </div>
-                                        <!-- ////////////////////////////////////////// -->
                                         <div class="form-group">
                                             <label for="size" class="col-form-label">Size</label>
                                             <input type="number" step="0.01" min="0.00" class="form-control" id="size"
                                                 th:field="*{size}">
                                         </div>
                                         <div class="form-group">
-                                            <label for="numberOfPage" class="col-form-label">Number of page</label>
-                                            <input type="number" min="0" class="form-control" id="numberOfPage"
-                                                th:field="*{numberOfPage}">
-                                        </div>
-                                        <div class="form-group">
                                             <label for="numberInStore" class="col-form-label">Number in store</label>
                                             <input type="number" min="0" class="form-control" id="numberInStore"
                                                 th:field="*{numberInStore}">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="cover" class="col-form-label">Type of cover</label> 
-                                            <select class="form-select form-select-sm" aria-label=".form-select-sm example"
-                                                th:field="*{cover}">
-                                                <option value="hard">Hard</option>
-                                                <option value="soft">Soft</option>
-                                            </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="picture" class="col-form-label">Picture</label>
@@ -302,9 +287,7 @@
                                             <th>Day publish</th>
                                             <th>Category</th>
                                             <th>Size</th>
-                                            <th>Number of page</th>
                                             <th>Number in Store</th>
-                                            <th>Type of cover</th>
                                             <th>Picture</th>
                                             <th>Info</th>
                                             <th>Action</th>
@@ -322,9 +305,7 @@
                                                 </div>
                                             </td>
                                             <td th:text="${item.size}"></td>
-                                            <td th:text="${item.numberOfPage}"></td>
                                             <td th:text="${item.numberInStore}"></td>
-                                            <td th:text="${item.cover}"></td>
                                             <td>
                                                 <img th:src="'/img/product-img/' + ${item.picture}" width="100">
                                                 <p th:text="${item.picture}"></p>

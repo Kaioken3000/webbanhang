@@ -217,7 +217,7 @@
 
                             <!-- Add to Cart Form -->
                             <form class="cart clearfix mb-50 d-flex" method="post"
-                                    th:action="@{/client/cart/addCart/{itemCart}(itemCart = ${item.id})}"
+                                    th:action="@{/client/cart/addCart/{itemCart}(itemCart = ${item.id})}/{itemCart}(itemCart = ${item.id})}"
                                     th:object="${cart}">
                                 <div class="quantity">
                                     <span class="qty-minus" onclick="var effect = document.getElementById('qty'); 
@@ -314,7 +314,7 @@
                                             </div>
                                             Add to Cart Form
                                             <form class="cart" method="post"
-                                                th:action="@{/client/cart/addCart/{itemCart}(itemCart = ${item.id})}"
+                                                th:action="@{/client/cart/addCart/{itemCart}(itemCart = ${item.id})}/{itemCart}(itemCart = ${item.id})}"
                                                 th:object="${cart}">
                                                 <div class="quantity">
                                                     <span class="qty-minus"

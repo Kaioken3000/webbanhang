@@ -2,6 +2,8 @@ package com.mywebsite.webbanhang.admin.item;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.mywebsite.webbanhang.admin.category.CategoryService;
 
@@ -19,10 +22,12 @@ public class ItemController {
     
     ItemService itemService;
     CategoryService categoryService;
+    HttpServletRequest request;
 
-    public ItemController(ItemService itemService, CategoryService categoryService) {
+    public ItemController(ItemService itemService, CategoryService categoryService, HttpServletRequest request) {
         this.itemService = itemService;
         this.categoryService = categoryService;
+        this.request = request;
     }
 
     @GetMapping("/admin/item")
@@ -71,15 +76,17 @@ public class ItemController {
     }
 
     @PostMapping("/admin/addItem")
-    public String addItem(@ModelAttribute("item") Item item){
+    public RedirectView addItem(@ModelAttribute("item") Item item, HttpServletRequest request){
         itemService.addItem(item);
-        return "redirect:/admin/item";
+        String referer = request.getHeader("Referer");
+        return new RedirectView(referer);
     }
 
     @GetMapping("/admin/deleteItem/{id}")
-    public String deleteItem(@PathVariable long id){
+    public RedirectView deleteItem(@PathVariable long id){
         itemService.deleteItem(id);
-        return "redirect:/admin/item";
+        String referer = request.getHeader("Referer");
+        return new RedirectView(referer);
     }
 
     @GetMapping("/admin/showUpdateItem/{id}")
@@ -90,7 +97,7 @@ public class ItemController {
     }
 
     @PostMapping("/admin/updateItem/{id}")
-    public String updateItem(@PathVariable long id, @ModelAttribute("item") Item item){
+    public RedirectView updateItem(@PathVariable long id, @ModelAttribute("item") Item item){
         Item extingItem = itemService.getItemById(id);
 		extingItem.setId(item.getId());
 		extingItem.setName(item.getName());
@@ -99,13 +106,12 @@ public class ItemController {
 		extingItem.setDayPublish(item.getDayPublish());
 		extingItem.setCategory(item.getCategory());
 		extingItem.setSize(item.getSize());
-		extingItem.setNumberOfPage(item.getNumberOfPage());
 		extingItem.setNumberInStore(item.getNumberInStore());
-		extingItem.setCover(item.getCover());
 		extingItem.setPicture(item.getPicture());
 		extingItem.setInfo(item.getInfo());
         
 		itemService.updateItem(extingItem);
-        return "redirect:/admin/item";
+        String referer = request.getHeader("Referer");
+        return new RedirectView(referer);
     }
 }

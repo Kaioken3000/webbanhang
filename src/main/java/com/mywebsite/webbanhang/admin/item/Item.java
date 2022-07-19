@@ -31,16 +31,13 @@ public class Item {
     private double price;
     private String info;
     private String publisher;
-    
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") 
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime dayPublish;
     private double size;
-    @Column(name="number_of_page")
-    private int numberOfPage;
     private String picture;
-    @Column(name="number_in_store")
+    @Column(name = "number_in_store")
     private long numberInStore;
-    private String cover;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinTable(name = "item_category", joinColumns = {
@@ -52,22 +49,20 @@ public class Item {
     }
 
     public Item(String name, double price, String info, String publisher, LocalDateTime dayPublish, double size,
-            int numberOfPage, String picture, long numberInStore, String cover, Set<Category> category) {
+            String picture, long numberInStore, Set<Category> category) {
         this.name = name;
         this.price = price;
         this.info = info;
         this.publisher = publisher;
         this.dayPublish = dayPublish;
         this.size = size;
-        this.numberOfPage = numberOfPage;
         this.picture = picture;
         this.numberInStore = numberInStore;
-        this.cover = cover;
         this.category = category;
     }
 
     public Item(long id, String name, double price, String info, String publisher, LocalDateTime dayPublish,
-            double size, int numberOfPage, String picture, long numberInStore, String cover, Set<Category> category) {
+            double size, String picture, long numberInStore, Set<Category> category) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -75,10 +70,8 @@ public class Item {
         this.publisher = publisher;
         this.dayPublish = dayPublish;
         this.size = size;
-        this.numberOfPage = numberOfPage;
         this.picture = picture;
         this.numberInStore = numberInStore;
-        this.cover = cover;
         this.category = category;
     }
 
@@ -130,14 +123,6 @@ public class Item {
         this.size = size;
     }
 
-    public int getNumberOfPage() {
-        return numberOfPage;
-    }
-
-    public void setNumberOfPage(int numberOfPage) {
-        this.numberOfPage = numberOfPage;
-    }
-
     public String getPicture() {
         return picture;
     }
@@ -152,14 +137,6 @@ public class Item {
 
     public void setNumberInStore(long numberInStore) {
         this.numberInStore = numberInStore;
-    }
-
-    public String getCover() {
-        return cover;
-    }
-
-    public void setCover(String cover) {
-        this.cover = cover;
     }
 
     public Set<Category> getCategory() {
@@ -178,13 +155,13 @@ public class Item {
         this.id = id;
     }
 
-    public String getCategoryObject(){
+    public String getCategoryObject() {
         Iterator<Category> irt = category.iterator();
         String ans = "";
-        while(irt.hasNext()){
+        while (irt.hasNext()) {
             Category c = (Category) irt.next();
-            ans+=c.getCode();
-            ans+=" ";
+            ans += c.getCode();
+            ans += " ";
         }
         return ans;
     }

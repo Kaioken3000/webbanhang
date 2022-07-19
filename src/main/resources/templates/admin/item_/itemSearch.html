@@ -302,9 +302,7 @@
                                             <th>Day publish</th>
                                             <th>Category</th>
                                             <th>Size</th>
-                                            <th>Number of page</th>
                                             <th>Number in Store</th>
-                                            <th>Type of cover</th>
                                             <th>Picture</th>
                                             <th>Info</th>
                                             <th>Action</th>
@@ -322,9 +320,7 @@
                                                 </div>
                                             </td>
                                             <td th:text="${item.size}"></td>
-                                            <td th:text="${item.numberOfPage}"></td>
                                             <td th:text="${item.numberInStore}"></td>
-                                            <td th:text="${item.cover}"></td>
                                             <td>
                                                 <img th:src="'/img/product-img/' + ${item.picture}" width="100">
                                                 <p th:text="${item.picture}"></p>
