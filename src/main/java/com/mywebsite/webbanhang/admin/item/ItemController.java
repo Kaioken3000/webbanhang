@@ -97,7 +97,7 @@ public class ItemController {
     }
 
     @PostMapping("/admin/updateItem/{id}")
-    public RedirectView updateItem(@PathVariable long id, @ModelAttribute("item") Item item){
+    public String updateItem(@PathVariable long id, @ModelAttribute("item") Item item){
         Item extingItem = itemService.getItemById(id);
 		extingItem.setId(item.getId());
 		extingItem.setName(item.getName());
@@ -110,8 +110,6 @@ public class ItemController {
 		extingItem.setPicture(item.getPicture());
 		extingItem.setInfo(item.getInfo());
         
-		itemService.updateItem(extingItem);
-        String referer = request.getHeader("Referer");
-        return new RedirectView(referer);
+		return "redirect:/admin/item";
     }
 }

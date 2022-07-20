@@ -37,11 +37,10 @@ public class CartController {
     }
 
     @PostMapping("/client/cart/addCart/{itemCart}")
-    public RedirectView addCart(@PathVariable long itemCart){
+    public RedirectView addCart(@PathVariable long itemCart, @ModelAttribute("cart") Cart cart){
         Principal principal = request.getUserPrincipal();
         User user = userService.getUserByEmail(principal.getName());
         
-        Cart cart = new Cart();
         cart.setUser(user);
         cart.setHasAddCart(true);
         cart.setHasBuy(false);
