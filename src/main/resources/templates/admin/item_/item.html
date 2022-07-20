@@ -209,7 +209,7 @@
                                     </button>
                                 </div>
                                 <!-- Form begin -->
-                                <form th:action="@{/admin/addItem}" th:object="${item}" method="POST">
+                                <form th:action="@{/admin/addItem}" th:object="${item}" method="POST" enctype="multipart/form-data">
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <label for="name" class="col-form-label">Name</label>
@@ -247,8 +247,12 @@
                                                 th:field="*{numberInStore}">
                                         </div>
                                         <div class="form-group">
-                                            <label for="picture" class="col-form-label">Picture</label>
-                                            <input type="file" class="form-control" id="picture" name="picture" th:field="*{picture}">
+                                            <label for="picture1" class="col-form-label">Picture</label>
+                                            <input type="file" class="form-control" id="picture1" name="picture1">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="images1" class="col-form-label">Image Details</label>
+                                            <input type="file" class="form-control" id="images1" name="images1" webkitdirectory multiple>
                                         </div>
                                         <div class="form-group">
                                             <label for="info" class="col-form-label">Info</label>
@@ -289,6 +293,7 @@
                                             <th>Size</th>
                                             <th>Number in Store</th>
                                             <th>Picture</th>
+                                            <th>Image detail</th>
                                             <th>Info</th>
                                             <th>Action</th>
                                         </tr>
@@ -309,6 +314,12 @@
                                             <td>
                                                 <img th:src="'/img/product-img/' + ${item.picture}" width="100">
                                                 <p th:text="${item.picture}"></p>
+                                            </td>
+                                            <td>
+                                                <th:block th:each="img : ${item.getImage()}">
+                                                    <img th:src="'/img/product-img/' + ${img.fileName}" width="40">
+                                                    <p th:text="${img.fileName}"></p>
+                                                </th:block>
                                             </td>
                                             <td th:text="${item.info}"></td>
                                             <td>

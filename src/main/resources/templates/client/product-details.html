@@ -165,19 +165,36 @@
                         <div class="single_product_thumb">
                             <div id="product_details_slider" class="carousel slide" data-ride="carousel">
 
-                                <ol class="carousel-indicators">
+                                <ol class="carousel-indicators" >
                                     <li class="active" data-target="#product_details_slider" data-slide-to="0"
-                                    th:style="'background-image :url(' + @{'/img/product-img/'+${item.picture}} + ');'">
+                                        th:style="'background-image :url(' + @{'/img/product-img/'+${item.picture}} + ');'">
                                     </li>
+                                    <th:block th:each="img : ${item.getImage()}">
+                                        <li data-target="#product_details_slider" class="sliderImg"
+                                            th:style="'background-image :url(' + @{'/img/product-img/'+${img.fileName}} + ');'">
+                                        </li>
+                                    </th:block>
                                 </ol>
+                                    <script>
+                                        var sliderImg = document.getElementsByClassName('sliderImg');
+                                        for(var i=0;i<sliderImg.length;i++){
+                                            sliderImg[i].setAttribute('data-slide-to', i+1);
+                                        }
+                                    </script>
 
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                        <a class="gallery_img" href="img/product-img/product-9.jpg">
-                                            <img class="d-block w-100" th:src="'/img/product-img/' + ${item.picture}"
-                                                alt="First slide">
+                                        <a class="gallery_img" th:href="'/img/product-img/' + ${item.picture}">
+                                            <img class="d-block w-100" th:src="'/img/product-img/' + ${item.picture}" alt="First slide">
                                         </a>
                                     </div>
+                                    <th:block th:each="imgs: ${item.getImage()}">
+                                        <div class="carousel-item">
+                                            <a class="gallery_img" th:href="'/img/product-img/' + ${imgs.fileName}">
+                                                <img class="d-block w-100" th:src="'/img/product-img/' + ${imgs.fileName}" alt="Seccond slide">
+                                            </a>
+                                        </div> 
+                                    </th:block>
                                 </div>
                             </div>
                         </div>

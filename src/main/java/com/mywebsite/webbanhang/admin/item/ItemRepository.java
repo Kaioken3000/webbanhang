@@ -14,10 +14,7 @@ public interface ItemRepository extends JpaRepository<Item, Long>{
                     +" or i.info like %:keyword%" 
                     +" or i.publisher like %:keyword%" 
                     +" or i.size like %:keyword%" 
-                    +" or i.number_of_page like %:keyword%" 
-                    +" or i.picture like %:keyword%" 
                     +" or i.number_in_store like %:keyword%"
-                    +" or i.cover like %:keyword%" 
                     +" or i.id like %:keyword%",
                     nativeQuery = true)
     List<Item> findByKeyword(@Param("keyword") String keyword);

@@ -1,6 +1,9 @@
 package com.mywebsite.webbanhang.admin.item;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,13 +16,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.mywebsite.webbanhang.admin.category.CategoryService;
+import com.mywebsite.webbanhang.client.image.FileModal;
 
 @Controller
 public class ItemController {
-    
+
     ItemService itemService;
     CategoryService categoryService;
     HttpServletRequest request;
@@ -61,7 +66,7 @@ public class ItemController {
     }
 
     @RequestMapping("/admin/item/showSearch")
-    public String findPaginatedSearch( Model model, String keyword) {
+    public String findPaginatedSearch(Model model, String keyword) {
         if (keyword != null) {
             List<Item> list = itemService.getByKeyword(keyword);
             model.addAttribute("listItems", list);
@@ -76,40 +81,74 @@ public class ItemController {
     }
 
     @PostMapping("/admin/addItem")
-    public RedirectView addItem(@ModelAttribute("item") Item item, HttpServletRequest request){
+    public RedirectView addItem(@ModelAttribute("item") Item item, HttpServletRequest request,
+            @RequestParam("images1") MultipartFile[] files, @RequestParam("picture1") MultipartFile picture) {
+        try {
+            List<FileModal> fileList = new ArrayList<FileModal>();
+            for (MultipartFile file : files) {
+                String fileContentType = file.getContentType();
+                String fileName = file.getOriginalFilename();
+                FileModal fileModal = new FileModal(fileName, fileContentType);
+                fileList.add(fileModal);
+            }
+            Set<FileModal> image = new HashSet<>(fileList);
+            item.setImage(image);
+            item.setPicture(picture.getOriginalFilename());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         itemService.addItem(item);
         String referer = request.getHeader("Referer");
         return new RedirectView(referer);
     }
 
     @GetMapping("/admin/deleteItem/{id}")
-    public RedirectView deleteItem(@PathVariable long id){
+    public RedirectView deleteItem(@PathVariable long id) {
         itemService.deleteItem(id);
         String referer = request.getHeader("Referer");
         return new RedirectView(referer);
     }
 
     @GetMapping("/admin/showUpdateItem/{id}")
-    public String showUpdateItem(@PathVariable long id, Model model){
+    public String showUpdateItem(@PathVariable long id, Model model) {
         model.addAttribute("item", itemService.getItemById(id));
         model.addAttribute("listCategories", categoryService.listAllCategory());
         return "/admin/item_/itemUpdate";
     }
 
     @PostMapping("/admin/updateItem/{id}")
-    public String updateItem(@PathVariable long id, @ModelAttribute("item") Item item){
+    public String updateItem(@PathVariable long id, @ModelAttribute("item") Item item,
+        @RequestParam("images1") MultipartFile[] files, @RequestParam("picture1") MultipartFile picture) {
+        try {
+            List<FileModal> fileList = new ArrayList<FileModal>();
+            for (MultipartFile file : files) {
+                String fileContentType = file.getContentType();
+                String fileName = file.getOriginalFilename();
+                FileModal fileModal = new FileModal(fileName, fileContentType);
+                fileList.add(fileModal);
+            }
+
+            Set<FileModal> image = new HashSet<>(fileList);
+            item.setImage(image);
+            item.setPicture(picture.getOriginalFilename());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         Item extingItem = itemService.getItemById(id);
-		extingItem.setId(item.getId());
-		extingItem.setName(item.getName());
-		extingItem.setPrice(item.getPrice());
-		extingItem.setPublisher(item.getPublisher());
-		extingItem.setDayPublish(item.getDayPublish());
-		extingItem.setCategory(item.getCategory());
-		extingItem.setSize(item.getSize());
-		extingItem.setNumberInStore(item.getNumberInStore());
-		extingItem.setPicture(item.getPicture());
-		extingItem.setInfo(item.getInfo());
-        
-		return "redirect:/admin/item";
+        extingItem.setId(item.getId());
+        extingItem.setName(item.getName());
+        extingItem.setPrice(item.getPrice());
+        extingItem.setPublisher(item.getPublisher());
+        extingItem.setDayPublish(item.getDayPublish());
+        extingItem.setCategory(item.getCategory());
+        extingItem.setSize(item.getSize());
+        extingItem.setNumberInStore(item.getNumberInStore());
+        extingItem.setPicture(item.getPicture());
+        extingItem.setImage(item.getImage());
+        extingItem.setInfo(item.getInfo());
+
+        return "redirect:/admin/item";
     }
 }

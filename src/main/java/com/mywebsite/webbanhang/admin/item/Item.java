@@ -16,9 +16,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.mywebsite.webbanhang.admin.category.Category;
+import com.mywebsite.webbanhang.client.image.FileModal;
 
 @Entity
 @Table(name = "item")
@@ -45,7 +47,28 @@ public class Item {
                     @JoinColumn(name = "category_id", referencedColumnName = "id") })
     private Set<Category> category;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(name = "item_image", joinColumns = {
+            @JoinColumn(name = "item_id", referencedColumnName = "id") }, inverseJoinColumns = {
+                    @JoinColumn(name = "image_id", referencedColumnName = "id") })
+    private Set<FileModal> image;
+
     public Item() {
+    }
+
+    public Item(long id, String name, double price, String info, String publisher, LocalDateTime dayPublish,
+            double size, String picture, long numberInStore, Set<Category> category, Set<FileModal> image) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.info = info;
+        this.publisher = publisher;
+        this.dayPublish = dayPublish;
+        this.size = size;
+        this.picture = picture;
+        this.numberInStore = numberInStore;
+        this.category = category;
+        this.image = image;
     }
 
     public Item(String name, double price, String info, String publisher, LocalDateTime dayPublish, double size,
@@ -164,6 +187,14 @@ public class Item {
             ans += " ";
         }
         return ans;
+    }
+
+    public Set<FileModal> getImage() {
+        return image;
+    }
+
+    public void setImage(Set<FileModal> image) {
+        this.image = image;
     }
 
 }
