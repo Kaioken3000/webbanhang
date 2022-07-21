@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.mywebsite.webbanhang.login_register.model.Provider;
 import com.mywebsite.webbanhang.login_register.model.Role;
 import com.mywebsite.webbanhang.login_register.model.User;
 import com.mywebsite.webbanhang.login_register.repository.RoleRepository;
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 	
-		User user = userRepository.findByEmail(username);
+		User user = userRepository.getUserByUsername(username);
 		if(user == null) {
 			throw new UsernameNotFoundException("Invalid username or password.");
 		}
@@ -96,7 +97,22 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User getUserByEmail(String email) {
-		return userRepository.findByEmail(email);
+		return userRepository.getUserByUsername(email);
 	}
+
+	public void processOAuthPostLogin(String email, String firstName, String lastName) {
+        User existUser = userRepository.getUserByUsername(email);
+         
+        if (existUser == null) {
+            User newUser = new User();
+            newUser.setProvider(Provider.GOOGLE);        
+            newUser.setFirstname(firstName);
+			newUser.setLastname(lastName);
+			newUser.setEmail(email);
+            userRepository.save(newUser);        
+        }
+		
+		return;
+    }
 	
 }

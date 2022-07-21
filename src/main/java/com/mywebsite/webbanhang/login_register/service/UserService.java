@@ -16,4 +16,5 @@ public interface UserService extends UserDetailsService{
     User updateAccountById(User user);
     Page<User> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
     User getUserByEmail(String email);
+    void processOAuthPostLogin(String username, String firstName, String lastName);
 }

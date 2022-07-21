@@ -1,104 +1,87 @@
-<!DOCTYPE html>
-<html lang="vi">
+<!doctype html>
+<html lang="en">
 
 <head>
-
+    <title>Karl-Register</title>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>SB Admin 2 - Register</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
 
-    <!-- Custom fonts for this template-->
-    <link href="/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <!-- Custom styles for this template-->
-    <link href="/admin/css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/login/css/style.css">
 
 </head>
 
-<body class="bg-gradient-primary">
-
-    <div class="container">
-
-        <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
-                <!-- Nested Row within Card Body -->
-                <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-                    <div class="col-lg-7">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+<body class="img js-fullheight" style="background-image: url(/login/images/bg.jpg);">
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-4">
+                    <div class="login-wrap p-0">
+                        <h3 class="mb-4 text-center">Create an account!</h3>
+                        <!-- login form begin -->
+                        <form th:action="@{/registration}" method="post" th:object="${user}" class="signin-form">
+                            <!-- logout message -->
+                            <div th:if="${param.success}" class="text-center">
+                                <P>You have successfully create an account! Login now :)</P>
                             </div>
-                            <form th:action="@{/registration}" method="post" th:object="${user}">
-                                <div class="form-group">
-                                    <lable class="control-lable" for="firstName">
-                                        First Name
-                                    </lable>
-                                    <input type="text" id="firstName" class="form-control" th:field="*{firstName}" required autofocus="autofocus">
-                                </div>
-            
-                                <div class="form-group">
-                                    <lable class="control-lable" for="lastName">
-                                        Last Name
-                                    </lable>
-                                    <input type="text" id="lastName" class="form-control" th:field="*{lastName}" required autofocus="autofocus">
-                                </div>
-            
-                                <div class="form-group">
-                                    <lable class="control-lable" for="email">
-                                        Email
-                                    </lable>
-                                    <input type="email" id="email" class="form-control" th:field="*{email}" required autofocus="autofocus">
-                                </div>
-            
-                                <div class="form-group">
-                                    <lable class="control-lable" for="password">
-                                        Password
-                                    </lable>
-                                    <input type="password" id="password" class="form-control" th:field="*{password}" required autofocus="autofocus">
-                                </div>
-            
-                                <br>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-success">Register</button>
-                                </div>
-                            </form>
-                            <hr>
-                            <div class="text-center">
-                                <a class="small" href="#">Forgot Password?</a>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="First name" id="firstName"
+                                    name="firstName" required th:field="*{firstName}">
                             </div>
-                            <div class="text-center">
-                                <a class="small" th:href="@{/login}">Already have an account? Login!</a>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Last name" id="lastName"
+                                    name="lastName" required th:field="*{lastName}">
                             </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Email" id="email"
+                                    name="email" required th:field="*{email}">
+                            </div>
+                            <div class="form-group">
+                                <input id="password" type="password" class="form-control" placeholder="Password"
+                                    required name="password" th:field="*{password}">
+                                <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="form-control btn btn-primary submit px-3">Register</button>
+                            </div>
+                            <div class="form-group d-md-flex">
+                                <div class="w-50">
+                                    <label class="checkbox-wrap checkbox-primary">Remember Me
+                                        <input type="checkbox" checked>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="w-50 text-md-right">
+                                    <a href="#" style="color: #fff">Forgot Password</a>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- login form end -->
+                        <p class="w-100 text-center">&mdash; Or Sign In With &mdash;</p>
+                        <div class="social d-flex text-center">
+                            <a href="#" class="px-2 py-2 mr-md-1 rounded"><span class="iconify"
+                                    data-icon="ion:logo-google"></span>
+                                Google</a>
+                            <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+                            <a href="#" class="px-2 py-2 ml-md-1 rounded"><span class="iconify"
+                                    data-icon="ion:logo-facebook"></span></span>
+                                Facebook</a>
+                            <a th:href="@{login}" class="px-2 py-2 ml-md-1 rounded">
+                                Login here</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-    </div>
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="/admin/vendor/jquery/jquery.min.js"></script>
-    <script src="/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <!-- Page level plugins -->
-    <script src="/admin/vendor/chart.js/Chart.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="/admin/js/demo/chart-area-demo.js"></script>
-    <script src="/admin/js/demo/chart-pie-demo.js"></script>
+    <script src="/login/js/jquery.min.js"></script>
+    <script src="/login/js/popper.js"></script>
+    <script src="/login/js/bootstrap.min.js"></script>
+    <script src="/login/js/main.js"></script>
 
 </body>
 

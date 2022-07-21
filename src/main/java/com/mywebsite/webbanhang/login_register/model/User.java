@@ -5,6 +5,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,6 +39,10 @@ public class User{
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles;
 
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
+ 
+    
     public User() {
     }
 
@@ -96,5 +102,12 @@ public class User{
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-
+    
+    public Provider getProvider() {
+        return provider;
+    }
+    
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
 }

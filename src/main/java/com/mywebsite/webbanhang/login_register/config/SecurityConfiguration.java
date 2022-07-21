@@ -1,5 +1,6 @@
 package com.mywebsite.webbanhang.login_register.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,9 +11,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.mywebsite.webbanhang.login_register.service.CustomOAuth2UserService;
+import com.mywebsite.webbanhang.login_register.successHandler.OAuth2SuccessHandler;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
+    @Autowired
+    private CustomOAuth2UserService oathAuth2UserService;
+
+    @Autowired
+    private OAuth2SuccessHandler authenticationSuccessHandler;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -28,21 +38,17 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers(
-                        "/admin/js/**",
-                        "/admin/css/**",
-                        "/admin/img/**",
-                        "/admin/vendor/**")
-                .anonymous()
+                .antMatchers("/oauth2/**").permitAll()
                 .antMatchers(
                         "/admin/**",
                         "/admin/js/**",
                         "/admin/css/**",
                         "/admin/img/**",
-                        "/admin/vendor/**")
+                        "/admin/vendor/**",
+                        "/login/**")
                 .access("hasRole('ROLE_ADMIN')")
                 .antMatchers(
-                        "/client/cart/**")
+                        "/client/cart/**", "/login/**")
                 .access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(
                         "/registration**",
@@ -54,20 +60,29 @@ public class SecurityConfiguration {
                         "/admin/js/**",
                         "/admin/css/**",
                         "/admin/img/**",
-                        "/admin/vendor/**")
+                        "/admin/vendor/**",
+                        "/login/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .permitAll()
+                        .loginPage("/login")
+                        .permitAll()
+                .and()
+                .oauth2Login()
+                        .loginPage("/login")
+                        .userInfoEndpoint()
+                        .userService(oathAuth2UserService)
+                        .and()
+                                .successHandler(authenticationSuccessHandler)
                 .and()
                 .logout()
-                .invalidateHttpSession(true)
-                .clearAuthentication(true)
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login?logout")
-                .permitAll();
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+                .and();
 
         return http.build();
     }

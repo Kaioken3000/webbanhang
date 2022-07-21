@@ -59,13 +59,13 @@
                         <!-- login form end -->
                         <p class="w-100 text-center">&mdash; Or Sign In With &mdash;</p>
                         <div class="social d-flex text-center">
-                            <a href="#" class="px-2 py-2 mr-md-1 rounded"><span class="iconify"
-                                    data-icon="ion:logo-facebook"></span>
-                                Facebook</a>
+                            <a th:href="@{/oauth2/authorization/google}" class="px-2 py-2 mr-md-1 rounded"><span class="iconify"
+                                    data-icon="ion:logo-google"></span>
+                                Google</a>
                             <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
                             <a href="#" class="px-2 py-2 ml-md-1 rounded"><span class="iconify"
-                                    data-icon="akar-icons:twitter-fill"></span></span>
-                                Twitter</a>
+                                    data-icon="ion:logo-facebook"></span></span>
+                                    Facebook</a>
                             <a th:href="@{registration}" class="px-2 py-2 ml-md-1 rounded">
                                 Sign in here</a>
                         </div>
