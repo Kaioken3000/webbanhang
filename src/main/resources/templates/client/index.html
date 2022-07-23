@@ -16,7 +16,7 @@
 
     <!-- Core Style CSS -->
     <link rel="stylesheet" href="/css/core-style.css">
-    
+
 
     <!-- Responsive CSS -->
     <link href="/css/responsive.css" rel="stylesheet">
@@ -42,49 +42,55 @@
                                     <a href="#"><img src="/img/core-img/logo.png" alt=""></a>
                                 </div>
                                 <!-- Cart & Menu Area -->
-                                <div class="header-cart-menu d-flex align-items-center ml-auto" sec:authorize="isAuthenticated()">
+                                <div class="header-cart-menu d-flex align-items-center ml-auto"
+                                    sec:authorize="isAuthenticated()">
                                     <!-- Cart Area -->
-                                    <div class="cart" >
-                                        <a href="#" id="header-cart-btn" ><span
-                                                class="cart_quantity"></span> <i class="ti-bag"></i> Your Bag <span id="cart-price"></span></a>
+                                    <div class="cart">
+                                        <a href="#" id="header-cart-btn"><span class="cart_quantity"></span> <i
+                                                class="ti-bag"></i> Your Bag <span id="cart-price"></span></a>
                                         <!-- Cart List Area Start -->
                                         <ul class="cart-list">
                                             <li th:each="cart : ${listCarts}">
                                                 <th:block th:each="item : ${cart.getItemCart()}">
-                                                    <a href="#" class="image"><img th:src="'/img/product-img/'+${item.picture}" class="cart-thumb w-100"></a>
+                                                    <a href="#" class="image"><img
+                                                            th:src="'/img/product-img/'+${item.picture}"
+                                                            class="cart-thumb w-100"></a>
                                                     <div class="cart-item-desc">
                                                         <h6><a href="#" th:text="${item.name}"></a></h6>
-                                                        <p><span class="number" th:text="${cart.number}"></span>x - $<span class="price" th:text="${item.price}"></span></p>
+                                                        <p><span class="number" th:text="${cart.number}"></span>x -
+                                                            $<span class="price" th:text="${item.price}"></span></p>
                                                     </div>
-                                                    <span class="dropdown-product-remove"><i class="icon-cross"></i></span>
+                                                    <span class="dropdown-product-remove"><i
+                                                            class="icon-cross"></i></span>
                                                 </th:block>
                                             </li>
-                                            
+
                                             <li class="total">
                                                 <span class="pull-right"></span>
                                                 <a th:href="@{/client/cart}" class="btn btn-sm btn-cart">Cart</a>
-                                                <a th:href="@{/client/checkout}" class="btn btn-sm btn-checkout">Checkout</a>
+                                                <a th:href="@{/client/checkout}"
+                                                    class="btn btn-sm btn-checkout">Checkout</a>
                                             </li>
                                             <script>
                                                 var cart = document.getElementsByClassName('cart-list');
                                                 var price = cart[0].getElementsByClassName('price');
                                                 var number = cart[0].getElementsByClassName('number');
                                                 var cart_quantity = document.getElementsByClassName('cart_quantity');
-                                                var sum=0;
-                                                var quantity=0;
-                                                for(var i=0;i<price.length;i++){
+                                                var sum = 0;
+                                                var quantity = 0;
+                                                for (var i = 0; i < price.length; i++) {
                                                     var price_i = price[i].textContent;
                                                     var number_i = number[i].textContent;
-                                                    var value = price_i*number_i;
-                                                    sum+=value;
-                                                    number_i-=0;
-                                                    quantity+=number_i;
+                                                    var value = price_i * number_i;
+                                                    sum += value;
+                                                    number_i -= 0;
+                                                    quantity += number_i;
                                                 }
                                                 cart_quantity[0].textContent = quantity;
                                                 var cart = document.getElementsByClassName('pull-right');
                                                 cart[0].textContent = 'Total: $' + sum.toFixed(2);
                                                 var cart_price = document.getElementById("cart-price");
-                                                cart_price.textContent ='$' + sum.toFixed(2);
+                                                cart_price.textContent = '$' + sum.toFixed(2);
                                             </script>
                                         </ul>
                                     </div>
@@ -162,8 +168,8 @@
                                         we offer free shipping</h6>
                                     <h2 data-animation="fadeInUp" data-delay="500ms" data-duration="500ms">Fashion
                                         Trends</h2>
-                                    <a th:href="@{/client/shop}" class="btn karl-btn" data-animation="fadeInUp" data-delay="1s"
-                                        data-duration="500ms">Shop Now</a>
+                                    <a th:href="@{/client/shop}" class="btn karl-btn" data-animation="fadeInUp"
+                                        data-delay="1s" data-duration="500ms">Shop Now</a>
                                 </div>
                             </div>
                         </div>
@@ -235,8 +241,8 @@
         <!-- ****** Top Catagory Area End ****** -->
 
         <!-- ****** Quick View Modal Area Start ****** -->
-        <div class="modal fade" th:each="item : ${itemLists}" id="quickview" th:classappend="'quickview'+${item.id}" tabindex="-1" role="dialog"
-            aria-labelledby="quickview" aria-hidden="true">
+        <div class="modal fade" th:each="item : ${itemLists}" id="quickview" th:classappend="'quickview'+${item.id}"
+            tabindex="-1" role="dialog" aria-labelledby="quickview" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
@@ -264,37 +270,48 @@
                                             </div>
                                             <h5 class="price" th:text="'$'+${item.price}"><span>$130</span></h5>
                                             <p th:text="${item.info}"></p>
-                                            <a th:href="@{/client/showProductDetail/{id}(id = ${item.id})}">View Full Product Details</a>
+                                            <a th:href="@{/client/showProductDetail/{id}(id = ${item.id})}">View Full
+                                                Product Details</a>
                                         </div>
                                         Add to Cart Form
                                         <form class="cart" method="post"
-                                                th:action="@{/client/cart/addCart/{itemCart}(itemCart = ${item.id})}"
-                                                th:object="${cart}">
-                                                <div class="quantity">
-                                                    <span class="qty-minus"
-                                                            th:onclick="'var effect = document.getElementById(&quot;qty' + ${item.id} + '&quot;); 
+                                            th:action="@{/client/cart/addCart/{itemCart}(itemCart = ${item.id})}"
+                                            th:object="${cart}">
+                                            <div class="quantity">
+                                                <span class="qty-minus" th:onclick="'var effect = document.getElementById(&quot;qty' + ${item.id} + '&quot;); 
                                                             var qty = effect.value;
                                                             if( !isNaN( qty ) && qty > 1 ) 
-                                                            effect.value--;return false;'"><i class="fa fa-minus"></i></span>
-                                                
-                                                    <input type="number" class="qty-text" th:id="'qty'+${item.id}" step="1" min="1" max="12" name="quantity" value="1"
-                                                        th:field="*{number}">
-                                                
-                                                    <span class="qty-plus"
-                                                        th:onclick="'var effect = document.getElementById(&quot;qty'+ ${item.id} + '&quot;); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;'"><i
-                                                            class="fa fa-plus" aria-hidden="true"></i></span>
-                                                </div>
-                                                <button type="submit" name="addtocart" value="5" class="cart-submit" 
-                                                >Add to cart</button>
-                                                <!-- Wishlist -->
-                                                <div class="modal_pro_wishlist">
-                                                    <a href="wishlist.html" target="_blank"><i class="ti-heart"></i></a>
-                                                </div>
-                                                <!-- Compare -->
-                                                <div class="modal_pro_compare">
-                                                    <a href="compare.html" target="_blank"><i class="ti-stats-up"></i></a>
-                                                </div>
-                                            </form>
+                                                            effect.value--;return false;'"><i
+                                                        class="fa fa-minus"></i></span>
+
+                                                <input type="number" class="qty-text" th:id="'qty'+${item.id}" step="1"
+                                                    min="1" max="12" name="quantity" value="1" th:field="*{number}">
+
+                                                <span class="qty-plus"
+                                                    th:onclick="'var effect = document.getElementById(&quot;qty'+ ${item.id} + '&quot;); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;'"><i
+                                                        class="fa fa-plus" aria-hidden="true"></i></span>
+                                            </div>
+                                            <button type="submit" name="addtocart" value="5" class="cart-submit">Add to
+                                                cart</button>
+                                            <!-- Wishlist -->
+                                            <div class="modal_pro_wishlist">
+                                                <a href="wishlist.html" target="_blank"><i class="ti-heart"></i></a>
+                                            </div>
+                                            <!-- Compare -->
+                                            <div class="modal_pro_compare">
+                                                <a href="compare.html" target="_blank"><i class="ti-stats-up"></i></a>
+                                            </div>
+                                        </form>
+                                        <script th:inline="javascript">
+                                            var id = "[[${item.id}]]"
+                                            var qty = document.getElementById("qty" + id)
+                                            var cart =  /*[[${listCarts}]]*/[];
+                                            for (var i = 0; i < cart.length; i++) {
+                                                if (cart[i].itemCart[0].id == id) {
+                                                    qty.value = cart[i].number;
+                                                }
+                                            }
+                                        </script>
 
                                         <div class="share_wf mt-30">
                                             <p>Share With Friend</p>
@@ -355,7 +372,8 @@
                                 <h4 class="product-price" th:text="${item.price} + '$'"></h4>
                                 <p th:text="${item.name}"></p>
                                 <!-- Add to Cart -->
-                                <a href="#" data-toggle="modal" th:data-target="${'.quickview'+item.id}" class="add-to-cart-btn">ADD TO CART</a>
+                                <a href="#" data-toggle="modal" th:data-target="${'.quickview'+item.id}"
+                                    class="add-to-cart-btn">ADD TO CART</a>
                             </div>
                         </div>
 

@@ -232,22 +232,33 @@
                             <form class="cart" method="post" th:action="@{/client/cart/addCart/{itemCart}(itemCart = ${item.id})}"
                                 th:object="${cart}">
                                 <div class="quantity">
-                                    <span class="qty-minus" th:onclick="'var effect = document.getElementById(&quot;qty' + ${item.id} + '&quot;); 
+                                    <span class="qty-minus" th:onclick="'var effect = document.getElementById(&quot;qty&quot;); 
                                                                                         var qty = effect.value;
                                                                                         if( !isNaN( qty ) && qty > 1 ) 
                                                                                         effect.value--;return false;'"><i
                                             class="fa fa-minus"></i></span>
                             
-                                    <input type="number" class="qty-text" th:id="'qty'+${item.id}" step="1" min="1" max="12" name="quantity"
+                                    <input type="number" class="qty-text" id="qty" step="1" min="1" max="12" name="quantity"
                                         value="1" th:field="*{number}">
                             
                                     <span class="qty-plus"
-                                        th:onclick="'var effect = document.getElementById(&quot;qty'+ ${item.id} + '&quot;); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;'"><i
+                                        th:onclick="'var effect = document.getElementById(&quot;qty&quot;); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;'"><i
                                             class="fa fa-plus" aria-hidden="true"></i></span>
                                 </div>
                                 <button type="submit" name="addtocart" value="5" class="cart-submit">Add to
                                     cart</button>
                             </form>
+
+                            <script th:inline="javascript">
+                                var id = "[[${item.id}]]"
+                                var qty = document.getElementById("qty")
+                                var cart =  /*[[${listCarts}]]*/ [];
+                                for(var i=0;i<cart.length;i++){
+                                    if(cart[i].itemCart[0].id == id){
+                                        qty.value = cart[i].number;
+                                    }
+                                }
+                            </script> 
 
                             <div id="accordion" role="tablist">
                                 <div class="card">
@@ -377,6 +388,16 @@
                                                     <a href="compare.html" target="_blank"><i class="ti-stats-up"></i></a>
                                                 </div>
                                             </form>
+                                            <script th:inline="javascript">
+                                                var id = "[[${item.id}]]"
+                                                var qty = document.getElementById("qty"+id)
+                                                var cart =  /*[[${listCarts}]]*/ [];
+                                                for(var i=0;i<cart.length;i++){
+                                                    if(cart[i].itemCart[0].id == id){
+                                                        qty.value = cart[i].number;
+                                                    }
+                                                }
+                                            </script> 
         
                                             <div class="share_wf mt-30">
                                                 <p>Share With Friend</p>

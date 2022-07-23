@@ -212,7 +212,18 @@
                                                     <a href="compare.html" target="_blank"><i class="ti-stats-up"></i></a>
                                                 </div>
                                             </form>
-        
+
+                                            <script th:inline="javascript">
+                                                var id = "[[${item.id}]]"
+                                                var qty = document.getElementById("qty"+id)
+                                                var cart =  /*[[${listCarts}]]*/ [];
+                                                for(var i=0;i<cart.length;i++){
+                                                    if(cart[i].itemCart[0].id == id){
+                                                        qty.value = cart[i].number;
+                                                    }
+                                                }
+                                            </script>    
+                                            
                                             <div class="share_wf mt-30">
                                                 <p>Share With Friend</p>
                                                 <div class="_icon">
